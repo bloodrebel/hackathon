@@ -5,6 +5,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import Model.Korisnik;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,7 +55,11 @@ public class RegisterController implements Initializable {
 	public void register () {
 		if(validation()) {
 			LocalDate date = datumRodjenja.getValue();
-			lblIme.setText(":)");
+			Korisnik korisnik = new Korisnik(0, tfKorisnickoIme.getText(),
+					tfIme.getText(), tfPrezime.getText(), 
+					pfSifra.getText(), datumRodjenja.getValue().toString(), 
+					tfAdresa.getText(), tfBrTel.getText(), 0);
+            korisnik.save();
 		}
         
 	}
@@ -65,13 +70,14 @@ public class RegisterController implements Initializable {
 				&& datumRodjenja.getValue() != null
 				&& tfPrezime.getText().length() > 2 
 				&& tfKorisnickoIme.getText().length() > 2
+				&& Korisnik.dostupno(tfKorisnickoIme.getText())
 				&& pfSifra.getText().length() > 5 
 				&& tfAdresa.getText().length() > 5) {
 			
 			return true;
 		}
 			if (datumRodjenja.getValue() == null) {
-				lblDatum.setText("Datum roðenja ne smije biti prazan !");
+				lblDatum.setText("Datum roÄ‘enja ne smije biti prazan !");
 			}
 			else {
 				lblDatum.setText("");
@@ -81,7 +87,7 @@ public class RegisterController implements Initializable {
 				lblIme.setText("Minimalno 3 znaka !");
 			}
 			else if (!isNum(tfIme.getText())) {
-				lblIme.setText("Dopuštena su samo slova");
+				lblIme.setText("DopuÅ¡tena su samo slova");
 			}
 			else {
 				lblIme.setText("");
@@ -91,7 +97,7 @@ public class RegisterController implements Initializable {
 				lblPrezime.setText("Minimalno 3 znaka !");				
 			}
 			else if (!isNum(tfPrezime.getText())) {
-				lblPrezime.setText("Dopuštena su samo slova");
+				lblPrezime.setText("DopuÅ¡tena su samo slova");
 			}
 			else {
 				lblPrezime.setText("");
@@ -99,6 +105,9 @@ public class RegisterController implements Initializable {
 			
 			if (tfKorisnickoIme.getText().length() < 3) {
 				lblKorisnickoIme.setText("Minimalno 3 znaka !");				
+			}
+			else if (! Korisnik.dostupno(tfKorisnickoIme.getText())){
+				lblKorisnickoIme.setText("KorisniÄko ime nije dostupno");
 			}
 			else {
 				lblKorisnickoIme.setText("");
