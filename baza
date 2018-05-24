@@ -1,0 +1,48 @@
+CREATE TABLE zanr (
+	id_zanr INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    zanr VARCHAR (15)
+);
+
+CREATE TABLE knjiga (
+    sifra_knjige INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    naziv_knjige VARCHAR(20) NOT NULL,
+    autor_knjige VARCHAR(20) NOT NULL,
+    dostupnost INT NOT NULL,
+    godina_posudbe INT NOT NULL,
+    id_zanr INT,
+    FOREIGN KEY(id_zanr) REFERENCES zanr(id_zanr)
+);
+
+CREATE TABLE vrsta_clana (
+	id_tip INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    vrsta_cl INT NOT NULL
+);
+
+CREATE TABLE korisnik (
+	sifra_korisnika INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    ime VARCHAR(15) NOT NULL,
+    prezime VARCHAR(30) NOT NULL,
+    datum_rod DATE NOT NULL,
+    korisnicko_ime VARCHAR(20) NOT NULL,
+    sifra VARCHAR(20) NOT NULL,
+    adresa VARCHAR(30) NOT NULL,
+    br_tel VARCHAR(15),
+    vrsta_cl INT,
+    FOREIGN KEY (vrsta_cl) REFERENCES vrsta_clana(id_tip) 
+);
+
+CREATE TABLE clanarina (
+	id_clanarina INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    datum_obnove DATE NOT NULL,
+    sifra_korisnika INT,
+    FOREIGN KEY (sifra_korisnika) REFERENCES korisnik(sifra_korisnika)     
+);
+
+CREATE TABLE posudba (
+	id_posudba INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    datum_posudbe DATE NOT NULL,
+    sifra_korisnika INT,
+    sifra_knjige INT,
+    FOREIGN KEY (sifra_korisnika) REFERENCES korisnik(sifra_korisnika),
+    FOREIGN KEY (sifra_knjige) REFERENCES knjiga(sifra_knjige)
+);
